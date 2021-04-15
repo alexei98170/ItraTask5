@@ -12,4 +12,7 @@ $(document).ready(function () {
         });
     });
 });
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8fd4a6dbe2df0f7f653b7e7465f0bf71ecc57590

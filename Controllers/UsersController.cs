@@ -170,7 +170,26 @@ namespace CustomIdentityApp.Controllers
                 if (id == 2)
                     user.IsChecked = false;
                 else
+<<<<<<< HEAD
                     user.IsChecked = true;
+=======
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                }
+
+            }
+            return RedirectToAction("Index");
+        }
+        [Authorize]
+        public async Task<ActionResult> RemoveAll()
+        {
+            foreach (var user in _userManager.Users.ToList())
+            {
+                user.IsChecked = false;
+>>>>>>> 8fd4a6dbe2df0f7f653b7e7465f0bf71ecc57590
 
                 var result = await _userManager.UpdateAsync(user);
                 if (result.Succeeded)
@@ -184,8 +203,17 @@ namespace CustomIdentityApp.Controllers
                     }
                 }
 
+<<<<<<< HEAD
             }
             return RedirectToAction("Index");
         }
+=======
+
+            }
+            return RedirectToAction("Index");
+        }
+
+
+>>>>>>> 8fd4a6dbe2df0f7f653b7e7465f0bf71ecc57590
     }
-}
+}  
