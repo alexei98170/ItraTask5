@@ -21,18 +21,18 @@ namespace CustomIdentityApp.Controllers
         public IActionResult Index() => View(_userManager.Users.ToList());
 
 
-        
+
         [Authorize]
         public async Task<ActionResult> Delete(string id)
         {
-           
+
 
 
             int identificator = 0;
 
             foreach (var user in _userManager.Users.ToList())
             {
-                if(user.IsChecked == true)
+                if (user.IsChecked == true)
                 {
                     ApplicationUser ouruser = await _userManager.FindByNameAsync(User.Identity.Name);
                     if (ouruser == user)
@@ -44,11 +44,11 @@ namespace CustomIdentityApp.Controllers
                     else
                     {
                         await _userManager.UpdateSecurityStampAsync(user);
-                       
+
                         IdentityResult result = await _userManager.DeleteAsync(user);
                     }
                 }
-                
+
             }
             if (identificator == 0)
             {
@@ -64,7 +64,7 @@ namespace CustomIdentityApp.Controllers
 
         public async Task<ActionResult> Block(string id)
         {
-            
+
 
 
             int identificator = 0;
@@ -134,7 +134,7 @@ namespace CustomIdentityApp.Controllers
 
             }
             return RedirectToAction("Index");
-            
+
 
 
 
@@ -143,8 +143,11 @@ namespace CustomIdentityApp.Controllers
         public async Task<ActionResult> Select(string id)
         {
             ApplicationUser user = await _userManager.FindByIdAsync(id);
-            user.IsChecked = true;
-            
+            if (user.IsChecked)
+                user.IsChecked = false;
+            else
+                user.IsChecked = true;
+
             var result = await _userManager.UpdateAsync(user);
             if (result.Succeeded)
             {
@@ -177,7 +180,7 @@ namespace CustomIdentityApp.Controllers
                         ModelState.AddModelError(string.Empty, error.Description);
                     }
                 }
-               
+
             }
             return RedirectToAction("Index");
         }
@@ -206,25 +209,5 @@ namespace CustomIdentityApp.Controllers
         }
 
 
-        [Authorize]
-        public async Task<ActionResult> Remove(string id)
-        {
-            ApplicationUser user = await _userManager.FindByIdAsync(id);
-            user.IsChecked = false;
-
-            var result = await _userManager.UpdateAsync(user);
-            if (result.Succeeded)
-            {
-                return RedirectToAction("Index");
-            }
-            else
-            {
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
-            }
-            return RedirectToAction("Index");
-        }
     }
-}
+}  
